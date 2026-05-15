@@ -1,19 +1,16 @@
 import MovieCard from "./MovieCard";
+import type { Movie } from "../services/api";
 
-type Movie = {
-  id: string;
+type MoviesListProps = {
+    movies: Movie[];
 };
 
-type Props = {
-  movies: Movie[];
-};
-
-export default function MoviesList({ movies }: Props) {
-  return (
-    <div>
-      {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
-      ))}
-    </div>
-  );
+export default function Movieslist({movies}: MoviesListProps) {
+    return (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {movies.map(movie => (
+                <MovieCard key={movie.id} movie={movie}/>
+            ))}
+        </div>
+    );
 }

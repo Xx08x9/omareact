@@ -1,34 +1,34 @@
 import { useEffect, useState } from 'react';
 import { boardMovies, searchMovies } from '../services/api';
+import type { Movie } from '../services/api';
 import SearchBar from '../components/SearchBar';
-import MoviesList from '../components/MoviesList';
+import Movieslist from '../components/MoviesList';
 
-    export default function Home() {
-        const [movies, setMovies] = useState([]);
+export default function Home() {
+    const [movies, setMovies] = useState<Movie[]>([]);
 
-        useEffect (() =>{
-            boardMovies().then(data => {
-                setMovies(data.titles);
-            });
-        }, []);
+    useEffect (() =>{
+        boardMovies().then(data => {
+            setMovies(data.titles);
+        });
+    }, []);
 
-        const handleSearch = (query: string) => {
-            searchMovies(query).then(data => {
-                setMovies(data.titles);
-            });
-        };
+    const handleSearch = (query: string) => {
+        searchMovies(query).then(data => {
+            setMovies(data.titles);
+        });
+    };
 
-       
-
-        return (
-            <div className='max-w-6xl mx-auto px-4 py-10'>
-              <div className='mb-12 text-center'>
-                <h1 className='text-4xl font-extrabold text-slate-900 mb-4'>Поиск Популярных Фильмов</h1>
-                <p className='text-lg text-slate-600 mb-8 max-w-2xl mx-auto'>Здесь вы можете найти информацию о фильмах</p>
+    return (
+        <main className="min-h-screen bg-slate-50">
+            <section className="mx-auto max-w-6xl px-4 py-8">
+                <div className="mb-8">
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-blue-600">MovieStore</p>
+                    <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">Каталог фильмов</h1>
+                </div>
                 <SearchBar onSearch={handleSearch}/>
-              </div>
-                
-                <MoviesList  movies={movies} />
-            </div>
-        );
-    }
+                <Movieslist movies={movies} />
+            </section>
+        </main>
+    );
+}
