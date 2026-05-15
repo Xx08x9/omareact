@@ -1,10 +1,19 @@
-import MovieCard from "./MovieCard";
+type Movie = {
+  id: string;
+  title: string;
+  poster?: string;
+};
 
-export default function Movieslist({movies}) { 
-   
-    return(<div className='grid grid-cols-4 gap-2'>
-        {movies.map(movie => (
-            <MovieCard key={movie.id} movie={movie}/>
-        ))}
-    </div>)
+type Props = {
+  movies: Movie[];
+};
+
+export default function MoviesList({ movies }: Props) {
+  return (
+    <>
+      {movies.map((movie) => (
+        <div key={movie.id}>{movie.title}</div>
+      ))}
+    </>
+  );
 }
