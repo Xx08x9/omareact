@@ -7,7 +7,7 @@ export default function MovieCard({ movie }: { movie: any }) {
   const favorite = isFavorite(movie.id);
 
 
-  console.log("ДАННЫЕ ФИЛЬМА:", movie);
+  console.log("ДАННЫЕ ФИЛЬМА КАРТОЧКИ:", movie);
 
   const handleFavorites = (e: React.MouseEvent) => {
     e.preventDefault();
