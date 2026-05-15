@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useFavorites } from "../context/favorites-context";
-import type React from "react";
+import React from "react";
 
 type Movie = {
   id: number;
@@ -18,38 +18,37 @@ type Props = {
 };
 
 export default function MovieCard({ movie }: Props) {
-  const { isFavorite, addToFavorites, removeFromFavorites } =
-    useFavorites();
+  const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
 
-  const favorite = isFavorite(movie.id);
+  const isFav = isFavorite(movie.id);
 
-  const handleFavorites = (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const title = movie.primaryTitle || movie.originalTitle || "Без названия";
+
+  const image =
+    movie.primaryImage?.url ||
+    movie.image ||
+    movie.poster ||
+    "https://via.placeholder.com/300x450?text=No+Image";
+
+  const toggleFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (favorite) {
+    if (isFav) {
       removeFromFavorites(movie.id);
     } else {
       addToFavorites(movie.id);
     }
   };
 
-  const imageUrl =
-    movie.primaryImage?.url ||
-    movie.image ||
-    movie.poster ||
-    "https://via.placeholder.com/300x450?text=No+Image";
-
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden flex flex-col h-full">
+    <article className="flex flex-col h-full bg-white border rounded-lg shadow-sm overflow-hidden">
       <Link to={`/movie/${movie.id}`} className="flex-1">
-        <div className="aspect-[2/3] bg-gray-100">
+        <div className="aspect-[2/3] bg-gray-100 overflow-hidden">
           <img
-            src={imageUrl}
-            alt={movie.primaryTitle || "movie"}
-            className="w-full h-full object-cover"
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             onError={(e) => {
               (e.target as HTMLImageElement).src =
                 "https://via.placeholder.com/300x450?text=No+Image";
@@ -58,24 +57,25 @@ export default function MovieCard({ movie }: Props) {
         </div>
 
         <div className="p-3">
-          <h3 className="font-bold text-gray-800 text-sm line-clamp-2">
-            {movie.primaryTitle || movie.originalTitle || "Без названия"}
+          <h3 className="text-sm font-semibold text-gray-800 line-clamp-2">
+            {title}
           </h3>
         </div>
       </Link>
 
       <div className="p-3 pt-0">
         <button
-          onClick={handleFavorites}
-          className={`w-full py-2 rounded-md text-sm font-semibold transition-colors ${
-            favorite
-              ? "bg-red-50 text-red-600"
-              : "bg-blue-600 text-white"
-          }`}
+          onClick={toggleFavorite}
+          className={[
+            "w-full py-2 rounded-md text-sm font-medium transition",
+            isFav
+              ? "bg-red-100 text-red-600 hover:bg-red-200"
+              : "bg-blue-600 text-white hover:bg-blue-700",
+          ].join(" ")}
         >
-          {favorite ? "Удалить" : "В избранное"}
+          {isFav ? "Удалить и избранного" : "Добавить в избранное"}
         </button>
       </div>
-    </div>
+    </article>
   );
 }
