@@ -13,5 +13,5 @@ export const removeFromFavorites = (id: string) => {
 }
 
 export const getFavorites = () => {
-    return JSON.parse(localStorage.getItem('favorites') || '[]') as string[];
+    return JSON.parse(localStorage.getItem('favorites') || '[]');
 }
